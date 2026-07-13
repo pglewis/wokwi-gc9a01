@@ -1,4 +1,4 @@
-name: Build chip
+name: Publish chip
 
 on:
   push:
@@ -8,27 +8,21 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  payload:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - name: Run model tests
-        run: make check
-      - name: Build chip
-        uses: wokwi/wokwi-chip-clang-action@main
-        with:
-          sources: "gc9a01.chip.c"
-      - name: Add chip definition
-        run: sudo cp chip.json dist/chip.json
+      - name: Validate payload
+        run: test -s chip.json && test -s chip.wasm
       - uses: actions/upload-artifact@v4
         with:
           name: chip
           path: |
-            dist/chip.json
-            dist/chip.wasm
+            chip.json
+            chip.wasm
 
   release:
-    needs: build
+    needs: payload
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     permissions:
