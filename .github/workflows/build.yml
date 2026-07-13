@@ -1,0 +1,46 @@
+name: Build chip
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run model tests
+        run: make check
+      - name: Build chip
+        uses: wokwi/wokwi-chip-clang-action@main
+        with:
+          sources: "gc9a01.chip.c"
+      - name: Add chip definition
+        run: sudo cp chip.json dist/chip.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: chip
+          path: |
+            dist/chip.json
+            dist/chip.wasm
+
+  release:
+    needs: build
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: chip
+          path: chip
+      - name: Package chip
+        run: cd chip && zip -9 ../chip.zip chip.json chip.wasm
+      - name: Publish release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: chip.zip
+          generateReleaseNotes: true
+

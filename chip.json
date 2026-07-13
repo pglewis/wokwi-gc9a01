@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "name": "GC9A01",
+  "author": "Kshyhoo reference; pglewis maintenance",
+  "docs": "https://github.com/pglewis/wokwi-gc9a01",
+  "pins": [
+    "VCC",
+    "GND",
+    "CS",
+    "DC",
+    "SCK",
+    "MOSI",
+    "BL",
+    "RST"
+  ],
+  "display": { "width": 240, "height": 240 }
+}
