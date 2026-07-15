@@ -13,13 +13,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Validate payload
-        run: test -s chip.json && test -s chip.wasm
+        run: |
+          test -s chip.json && test -s chip.wasm
+          test -s ec11-adapter/chip.json && test -s ec11-adapter/chip.wasm
+      - name: Select payload
+        run: |
+          mkdir payload
+          if [[ "${GITHUB_REF_NAME}" == v2.* ]]; then
+            cp ec11-adapter/chip.json ec11-adapter/chip.wasm payload/
+          else
+            cp chip.json chip.wasm payload/
+          fi
       - uses: actions/upload-artifact@v4
         with:
           name: chip
-          path: |
-            chip.json
-            chip.wasm
+          path: payload/
 
   release:
     needs: payload

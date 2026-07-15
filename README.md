@@ -1,6 +1,12 @@
-# Wokwi GC9A01 custom chip
+# Wokwi LCDKit custom chips
 
-Release payload for the GC9A01 custom chip used by the online Wokwi demo.
+Release payloads for the GC9A01 display and EC11 quadrature adapter used by
+the online Wokwi LCDKit demo. The repository name is retained so existing
+GC9A01 dependencies keep working.
+
+Wokwi packages exactly one chip per release. The `1.x` release line publishes
+the GC9A01 payload; the `2.x` release line publishes the adapter payload. For
+example, `v1.0.3` publishes GC9A01 and `v2.0.0` publishes the EC11 adapter.
 
 ## Provenance
 

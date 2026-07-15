@@ -1,0 +1,10 @@
+{
+  "name": "EC11 Quadrature Adapter",
+  "author": "LoomRT",
+  "pins": [
+    "KY_CLK",
+    "KY_DT",
+    "DT",
+    "CLK"
+  ]
+}
